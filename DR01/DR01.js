@@ -14,5 +14,16 @@ require([
 	var ndviLayer = new ArcGISDynamicMapServiceLayer("http://ags.giskku.in.th/ArcGISServer/rest/services/NRU/NRU-MODIS/MapServer");
 	//ndviLayer.setVisibleLayers([0]);
 	map.addLayers([ndviLayer]);
+	//-map.on("layers-add-result",initSlider);
+	//function initSlider(){
+	//	var timeSlider = new TimeSlider({
+	//		style:"width: 100%"
+	//	},dom.byId("timeSlideDev"));
+	//	map.setTimeSlider(timeSlider);
 
+	//	var timeExtent = new TimeExtent();
+	//	timeExtent.startTime = new Date()
+
+	//}
 });
+
