@@ -10,7 +10,7 @@ var drStore = new Ext.data.JsonStore({
 drStore.load();
 
 drStore.on('load', function (ds) {
-        var time = drStore.get("timeInfo");
+        var time = drStore.getAt(0);
         alert(time);
     });
 
@@ -45,8 +45,9 @@ require([
 });
 
 Ext.onReady(function () {
-	Ext.data.Connection.prototype.useDefaultXhrHeader = false;
     Ext.QuickTips.init();
+    Ext.Ajax.useDefaultXhrHeader = false;
+    Ext.Ajax.cors = true;
     //MainTabs.render('grid-ct');
 
 });
