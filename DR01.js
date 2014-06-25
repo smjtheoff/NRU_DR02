@@ -1,19 +1,38 @@
 var map;
 
 //---------  JSON DataStoee ------------
-var drLayerURL  = "http://ags.giskku.in.th/ArcGISServer/rest/services/NRU/NRU-MODIS/MapServer/0?f=json"
+var drLayerURL  = "http://ags.giskku.in.th/ArcGISServer/rest/services/NRU/NRU-MODIS/MapServer/0?f=json&pretty=true"
 
-var drStore = new Ext.data.JsonStore({
-	url : drLayerURL
-	, fields :["timeInfo"]
-})
-drStore.load();
+var drJson = $.getJSON(drLayerURL);
+var startDate,endDate = null;
 
-drStore.on('load', function (ds) {
-        var time = drStore.getAt(0);
-        alert(time);
+var json = (function () {
+    var json = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': drLayerURL,
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
     });
+    return json;
+})(); 
+startDate = json['timeInfo']['timeExtent'][0];
+endDate = json['timeInfo']['timeExtent'][1];
 
+function epoch2HDate(epoch){
+	var fDate = new Date(epoch);
+	date = fDate.toLocaleString();
+	d = date.substring(0,2);
+	m = date.substring(3,5);
+	y = parseInt(date.substring(6,10))+543
+	return y+"/"+m+"/"+d+" 00:00:00"
+}
+
+//console.log(epoch2HDate(startDate));
+//console.log(epoch2HDate(endDate));
 
 require([
 	"esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", 
@@ -43,6 +62,14 @@ require([
 
 	//}
 });
+
+function FormatNumberLength(num, length) {
+    var r = "" + num;
+    while (r.length < length) {
+        r = "0" + r;
+    }
+    return r;
+}
 
 Ext.onReady(function () {
     Ext.QuickTips.init();
